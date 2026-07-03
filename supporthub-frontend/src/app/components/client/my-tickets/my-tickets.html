@@ -1,0 +1,51 @@
+<div class="page">
+  <div class="page-header">
+    <h2>My Tickets</h2>
+    <a routerLink="/client/create-ticket" class="btn-primary">+ New Ticket</a>
+  </div>
+
+  <div class="filters">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()"
+      placeholder="Search by title or ticket number..." class="search-input" />
+    <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+      <option value="">All Statuses</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+    <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+      <option value="">All Categories</option>
+      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading tickets...</div>
+  <div class="empty" *ngIf="!loading && filtered.length === 0">
+    No tickets found. <a routerLink="/client/create-ticket">Raise your first ticket</a>
+  </div>
+
+  <div class="ticket-table" *ngIf="!loading && filtered.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket #</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of filtered">
+          <td><code>{{ ticket.ticketNumber }}</code></td>
+          <td>{{ ticket.title }}</td>
+          <td><span class="badge category">{{ ticket.category }}</span></td>
+          <td><span [class]="'badge priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span></td>
+          <td><app-status-badge [status]="ticket.status"></app-status-badge></td>
+          <td>{{ ticket.createdAt | date:'dd MMM yyyy' }}</td>
+          <td><button class="btn-view" (click)="viewTicket(ticket.id)">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

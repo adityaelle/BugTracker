@@ -1,0 +1,39 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h2>My Dashboard</h2>
+    <a routerLink="/client/create-ticket" class="btn-primary">+ New Ticket</a>
+  </div>
+
+  <div class="stats-grid" *ngIf="dashboard">
+    <div class="stat-card total">
+      <span class="stat-value">{{ dashboard.totalTickets }}</span>
+      <span class="stat-label">Total Tickets</span>
+    </div>
+    <div class="stat-card new">
+      <span class="stat-value">{{ dashboard.newTickets }}</span>
+      <span class="stat-label">New</span>
+    </div>
+    <div class="stat-card progress">
+      <span class="stat-value">{{ dashboard.inProgressTickets }}</span>
+      <span class="stat-label">In Progress</span>
+    </div>
+    <div class="stat-card resolved">
+      <span class="stat-value">{{ dashboard.resolvedTickets }}</span>
+      <span class="stat-label">Resolved</span>
+    </div>
+    <div class="stat-card closed">
+      <span class="stat-value">{{ dashboard.closedTickets }}</span>
+      <span class="stat-label">Closed</span>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading dashboard...</div>
+
+  <div class="quick-links">
+    <h3>Quick Actions</h3>
+    <div class="links-grid">
+      <a routerLink="/client/create-ticket" class="quick-card">Raise New Ticket</a>
+      <a routerLink="/client/my-tickets" class="quick-card">View All My Tickets</a>
+    </div>
+  </div>
+</div>

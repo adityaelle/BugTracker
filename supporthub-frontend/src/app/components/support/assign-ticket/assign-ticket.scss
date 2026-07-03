@@ -1,0 +1,30 @@
+.page { padding: 32px; max-width: 700px; margin: 0 auto; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; h2 { font-size: 24px; color: #1a1a2e; margin: 0; } }
+.btn-back { color: #1a1a2e; text-decoration: none; font-size: 14px; &:hover { text-decoration: underline; } }
+.ticket-summary {
+  background: #e8eaf6; border-radius: 12px; padding: 20px; margin-bottom: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  .summary-row { display: flex; gap: 12px; font-size: 14px; .label { font-weight: 600; color: #283593; min-width: 100px; } }
+  code { background: #fff; color: #283593; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+}
+.form-card { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group {
+  margin-bottom: 20px;
+  label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  select, textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 14px; font-family: inherit; box-sizing: border-box; resize: vertical;
+    &:focus { outline: none; border-color: #1a1a2e; }
+  }
+}
+.form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid #f0f2f5; }
+.btn-primary {
+  background: #1a1a2e; color: #fff; padding: 11px 28px; border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+  &:hover:not(:disabled) { background: #0f3460; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+.btn-secondary { background: #f0f2f5; color: #333; padding: 11px 28px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; &:hover { background: #e0e2e5; } }
+.alert-success { background: #e8f5e9; color: #2e7d32; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; }
+.alert-error { background: #fce4ec; color: #c62828; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; }

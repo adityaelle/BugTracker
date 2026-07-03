@@ -1,0 +1,31 @@
+.page { padding: 32px; max-width: 1200px; margin: 0 auto; }
+.page-header { margin-bottom: 24px; h2 { font-size: 24px; color: #1a1a2e; margin: 0; } }
+.filters {
+  display: flex; gap: 12px; margin-bottom: 24px;
+  .search-input { flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; &:focus { outline: none; border-color: #1a1a2e; } }
+  select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff; }
+}
+.ticket-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.ticket-card {
+  background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid #1a1a2e; display: flex; flex-direction: column; gap: 12px;
+  &.sla-breach { border-left-color: #c62828; background: #fff8f8; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; code { background: #e8eaf6; color: #283593; padding: 2px 8px; border-radius: 4px; font-size: 12px; } }
+  .card-title { margin: 0; font-size: 15px; color: #1a1a2e; font-weight: 600; line-height: 1.4; }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .card-client { font-size: 13px; color: #666; }
+  .card-actions { display: flex; gap: 8px; margin-top: 4px; }
+}
+.badge {
+  padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase;
+  &.category { background: #e3f2fd; color: #1565c0; }
+  &.priority-low { background: #e8f5e9; color: #2e7d32; }
+  &.priority-medium { background: #fff8e1; color: #f57f17; }
+  &.priority-high { background: #fff3e0; color: #e65100; }
+  &.priority-critical { background: #fce4ec; color: #c62828; }
+}
+.sla-badge { background: #fce4ec; color: #c62828; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+.btn-view { background: #e8eaf6; color: #283593; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; &:hover { background: #c5cae9; } }
+.btn-status { background: #1565c0; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; &:hover { background: #0d47a1; } }
+.btn-resolve { background: #2e7d32; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; &:hover { background: #1b5e20; } }
+.loading, .empty { text-align: center; color: #888; padding: 60px; }

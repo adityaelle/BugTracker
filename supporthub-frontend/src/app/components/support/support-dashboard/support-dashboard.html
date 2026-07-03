@@ -1,0 +1,62 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Support Desk Dashboard</h2>
+  </div>
+
+  <div class="stats-grid" *ngIf="dashboard">
+    <div class="stat-card"><span class="stat-value">{{ dashboard.totalTickets }}</span><span class="stat-label">Total</span></div>
+    <div class="stat-card new"><span class="stat-value">{{ dashboard.newTickets }}</span><span class="stat-label">New</span></div>
+    <div class="stat-card open"><span class="stat-value">{{ dashboard.openTickets }}</span><span class="stat-label">Assigned</span></div>
+    <div class="stat-card progress"><span class="stat-value">{{ dashboard.inProgressTickets }}</span><span class="stat-label">In Progress</span></div>
+    <div class="stat-card breach"><span class="stat-value">{{ dashboard.slaBreachedTickets }}</span><span class="stat-label">SLA Breached</span></div>
+    <div class="stat-card reopen"><span class="stat-value">{{ dashboard.reopenedTickets }}</span><span class="stat-label">Reopened</span></div>
+  </div>
+
+  <div class="filters">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()" placeholder="Search tickets..." class="search-input" />
+    <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+      <option value="">All Statuses</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+    <select [(ngModel)]="selectedPriority" (change)="applyFilters()">
+      <option value="">All Priorities</option>
+      <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading tickets...</div>
+
+  <div class="ticket-table" *ngIf="!loading && filtered.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket #</th>
+          <th>Title</th>
+          <th>Client</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>SLA</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of filtered" [class.sla-breach]="ticket.slaBreached">
+          <td><code>{{ ticket.ticketNumber }}</code></td>
+          <td>{{ ticket.title }}</td>
+          <td>{{ ticket.raisedBy?.fullName }}</td>
+          <td><span [class]="'badge priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span></td>
+          <td><app-status-badge [status]="ticket.status"></app-status-badge></td>
+          <td>
+            <span *ngIf="ticket.slaBreached" class="sla-badge">BREACHED</span>
+            <span *ngIf="!ticket.slaBreached" class="sla-ok">OK</span>
+          </td>
+          <td class="actions">
+            <button class="btn-view" (click)="viewTicket(ticket.id)">View</button>
+            <button class="btn-assign" (click)="assignTicket(ticket.id)">Assign</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="empty" *ngIf="!loading && filtered.length === 0">No tickets found.</div>
+</div>

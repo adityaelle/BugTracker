@@ -1,0 +1,40 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <span class="brand-name">SupportHub</span>
+  </div>
+
+  <div class="navbar-links" *ngIf="authService.isLoggedIn()">
+
+    <ng-container *ngIf="authService.hasRole(UserRole.CLIENT)">
+      <a routerLink="/client/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/client/create-ticket" routerLinkActive="active">New Ticket</a>
+      <a routerLink="/client/my-tickets" routerLinkActive="active">My Tickets</a>
+    </ng-container>
+
+    <ng-container *ngIf="authService.hasRole(UserRole.SUPPORT_DESK)">
+      <a routerLink="/support/dashboard" routerLinkActive="active">Dashboard</a>
+    </ng-container>
+
+    <ng-container *ngIf="authService.hasRole(UserRole.DEVELOPER)">
+      <a routerLink="/developer/dashboard" routerLinkActive="active">Dashboard</a>
+    </ng-container>
+
+    <ng-container *ngIf="authService.hasRole(UserRole.QA_TESTER)">
+      <a routerLink="/qa/dashboard" routerLinkActive="active">Dashboard</a>
+    </ng-container>
+
+    <ng-container *ngIf="authService.hasRole(UserRole.TEAM_LEAD)">
+      <a routerLink="/teamlead/dashboard" routerLinkActive="active">Dashboard</a>
+    </ng-container>
+
+    <ng-container *ngIf="authService.hasRole(UserRole.ADMIN)">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+    </ng-container>
+  </div>
+
+  <div class="navbar-user" *ngIf="authService.isLoggedIn()">
+    <span class="user-name">{{ authService.getCurrentUser()?.fullName }}</span>
+    <span class="user-role">{{ authService.getCurrentUser()?.role }}</span>
+    <button class="btn-logout" (click)="logout()">Logout</button>
+  </div>
+</nav>

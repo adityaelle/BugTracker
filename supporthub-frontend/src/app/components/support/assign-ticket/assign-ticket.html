@@ -1,0 +1,54 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Assign Ticket</h2>
+    <a routerLink="/support/dashboard" class="btn-back">Back to Dashboard</a>
+  </div>
+
+  <div class="ticket-summary" *ngIf="ticket">
+    <div class="summary-row"><span class="label">Ticket #</span><code>{{ ticket.ticketNumber }}</code></div>
+    <div class="summary-row"><span class="label">Title</span><span>{{ ticket.title }}</span></div>
+    <div class="summary-row"><span class="label">Raised By</span><span>{{ ticket.raisedBy?.fullName }}</span></div>
+    <div class="summary-row"><span class="label">Category</span><span>{{ ticket.category }}</span></div>
+  </div>
+
+  <div class="form-card">
+    <div class="alert-success" *ngIf="success">{{ success }}</div>
+    <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Assign To *</label>
+        <select formControlName="assigneeId">
+          <option value="">Select Team Member</option>
+<option *ngFor="let d of developers" [value]="d.id">
+  {{ d.fullName }} ({{ d.role }} - {{ d.department }})
+</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Priority *</label>
+          <select formControlName="priority">
+            <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Severity *</label>
+          <select formControlName="severity">
+            <option *ngFor="let s of severities" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Remarks</label>
+        <textarea formControlName="remarks" rows="3" placeholder="Optional notes for the developer"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" routerLink="/support/dashboard">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="loading">
+          {{ loading ? 'Assigning...' : 'Assign Ticket' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

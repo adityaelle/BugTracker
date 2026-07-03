@@ -1,0 +1,85 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Raise New Ticket</h2>
+    <a routerLink="/client/my-tickets" class="btn-back">Back to My Tickets</a>
+  </div>
+
+  <div class="form-card">
+    <div class="alert-success" *ngIf="success">{{ success }}</div>
+    <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-section">
+        <h3>Basic Information</h3>
+        <div class="form-group full">
+          <label>Title *</label>
+          <input type="text" formControlName="title" placeholder="Brief summary of the issue" />
+        </div>
+        <div class="form-group full">
+          <label>Description *</label>
+          <textarea formControlName="description" rows="4" placeholder="Detailed description"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category *</label>
+            <select formControlName="category">
+              <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority *</label>
+            <select formControlName="priority">
+              <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Environment *</label>
+            <select formControlName="environment">
+              <option *ngFor="let e of environments" [value]="e">{{ e }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Application Module</label>
+            <input type="text" formControlName="applicationModule" placeholder="e.g. Login, Payment" />
+          </div>
+          <div class="form-group">
+            <label>Version</label>
+            <input type="text" formControlName="version" placeholder="e.g. 2.1.0" />
+          </div>
+          <div class="form-group">
+            <label>Browser</label>
+            <input type="text" formControlName="browser" placeholder="e.g. Chrome 120" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Reproduction Details</h3>
+        <div class="form-group full">
+          <label>Steps to Reproduce</label>
+          <textarea formControlName="stepsToReproduce" rows="3" placeholder="1. Go to...&#10;2. Click on...&#10;3. See error"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expected Result</label>
+            <textarea formControlName="expectedResult" rows="3" placeholder="What should happen"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Actual Result</label>
+            <textarea formControlName="actualResult" rows="3" placeholder="What actually happens"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="form.reset()">Clear</button>
+        <button type="submit" class="btn-primary" [disabled]="loading">
+          {{ loading ? 'Submitting...' : 'Submit Ticket' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

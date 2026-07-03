@@ -1,0 +1,48 @@
+<div class="page">
+  <div class="page-header">
+    <h2>{{ isTeamLead ? 'Team Lead' : 'Developer' }} Dashboard</h2>
+  </div>
+
+  <div class="filters">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()"
+      placeholder="Search tickets..." class="search-input" />
+    <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+      <option value="">All Statuses</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading your tickets...</div>
+  <div class="empty" *ngIf="!loading && filtered.length === 0">No tickets assigned to you.</div>
+
+  <div class="ticket-grid" *ngIf="!loading && filtered.length > 0">
+    <div class="ticket-card" *ngFor="let ticket of filtered" [class.sla-breach]="ticket.slaBreached">
+      <div class="card-header">
+        <code>{{ ticket.ticketNumber }}</code>
+        <app-status-badge [status]="ticket.status"></app-status-badge>
+      </div>
+      <h4 class="card-title">{{ ticket.title }}</h4>
+      <div class="card-meta">
+        <span [class]="'badge priority-' + ticket.priority.toLowerCase()">{{ ticket.priority }}</span>
+        <span class="badge category">{{ ticket.category }}</span>
+        <span *ngIf="ticket.slaBreached" class="sla-badge">SLA BREACHED</span>
+      </div>
+      <div class="card-client">Raised by: <strong>{{ ticket.raisedBy?.fullName }}</strong></div>
+      <div class="card-actions">
+        <button class="btn-view" (click)="viewTicket(ticket.id)">View Details</button>
+        <button
+          *ngIf="ticket.status === TicketStatus.ASSIGNED"
+          class="btn-status"
+          (click)="updateStatus(ticket, TicketStatus.IN_PROGRESS)">
+          Start Working
+        </button>
+        <button
+          *ngIf="ticket.status === TicketStatus.IN_PROGRESS"
+          class="btn-resolve"
+          (click)="updateStatus(ticket, TicketStatus.RESOLVED)">
+          Mark Resolved
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

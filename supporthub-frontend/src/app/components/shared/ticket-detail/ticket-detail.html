@@ -1,0 +1,117 @@
+<div class="page" *ngIf="!loading && detail">
+  <div class="page-header">
+    <div class="header-left">
+      <button class="btn-back" (click)="goBack()">Back</button>
+      <div>
+        <h2>{{ detail.ticket.title }}</h2>
+        <code>{{ detail.ticket.ticketNumber }}</code>
+      </div>
+    </div>
+    <app-status-badge [status]="detail.ticket.status"></app-status-badge>
+  </div>
+
+  <div class="detail-layout">
+    <div class="main-col">
+
+      <div class="card">
+        <h3>Description</h3>
+        <p>{{ detail.ticket.description }}</p>
+      </div>
+
+      <div class="card" *ngIf="detail.ticket.stepsToReproduce">
+        <h3>Steps to Reproduce</h3>
+        <pre>{{ detail.ticket.stepsToReproduce }}</pre>
+        <div class="result-row" *ngIf="detail.ticket.expectedResult">
+          <div><strong>Expected:</strong><p>{{ detail.ticket.expectedResult }}</p></div>
+          <div><strong>Actual:</strong><p>{{ detail.ticket.actualResult }}</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Discussion ({{ detail.comments.length }})</h3>
+        <div class="comments">
+          <div class="comment" *ngFor="let c of detail.comments">
+            <div class="comment-meta">
+              <strong>{{ c.commentedBy.fullName }}</strong>
+              <span class="role-tag">{{ c.commentedBy.role }}</span>
+              <span class="time">{{ c.createdAt | date:'dd MMM yyyy, h:mm a' }}</span>
+            </div>
+            <p class="comment-body">{{ c.content }}</p>
+          </div>
+          <div class="no-comments" *ngIf="detail.comments.length === 0">No comments yet.</div>
+        </div>
+        <div class="comment-form">
+          <textarea [(ngModel)]="commentText" rows="3" placeholder="Add a comment..."></textarea>
+          <button class="btn-primary" (click)="addComment()" [disabled]="!commentText.trim()">
+            Post Comment
+          </button>
+        </div>
+      </div>
+
+      <div class="card"
+        *ngIf="authService.hasRole(UserRole.CLIENT) && detail.ticket.status === TicketStatus.VERIFIED">
+        <h3>Confirm Resolution</h3>
+        <p>Is your issue resolved? Close the ticket to confirm.</p>
+        <div class="resolution-actions">
+          <button class="btn-close" (click)="closeTicket()">Close Ticket</button>
+          <button class="btn-reopen-toggle" (click)="showReopenForm = !showReopenForm">
+            Issue Not Resolved — Reopen
+          </button>
+        </div>
+        <div class="reopen-form" *ngIf="showReopenForm">
+          <textarea [(ngModel)]="reopenReason" rows="3" placeholder="Describe why the issue is not resolved..."></textarea>
+          <button class="btn-reopen" (click)="reopenTicket()" [disabled]="!reopenReason.trim()">
+            Submit Reopen Request
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="side-col">
+      <div class="card info-card">
+        <h3>Ticket Info</h3>
+        <div class="info-row"><span>Category</span><strong>{{ detail.ticket.category }}</strong></div>
+        <div class="info-row"><span>Priority</span><strong>{{ detail.ticket.priority }}</strong></div>
+        <div class="info-row"><span>Severity</span><strong>{{ detail.ticket.severity }}</strong></div>
+        <div class="info-row"><span>Environment</span><strong>{{ detail.ticket.environment }}</strong></div>
+        <div class="info-row" *ngIf="detail.ticket.applicationModule"><span>Module</span><strong>{{ detail.ticket.applicationModule }}</strong></div>
+        <div class="info-row" *ngIf="detail.ticket.version"><span>Version</span><strong>{{ detail.ticket.version }}</strong></div>
+        <div class="info-row" *ngIf="detail.ticket.browser"><span>Browser</span><strong>{{ detail.ticket.browser }}</strong></div>
+      </div>
+
+      <div class="card info-card">
+        <h3>People</h3>
+        <div class="info-row"><span>Raised By</span><strong>{{ detail.ticket.raisedBy?.fullName }}</strong></div>
+        <div class="info-row"><span>Assigned To</span><strong>{{ detail.ticket.assignedTo?.fullName || 'Support Desk' }}</strong></div>
+      </div>
+
+      <div class="card info-card">
+        <h3>SLA</h3>
+        <div class="info-row"><span>Deadline</span><strong>{{ detail.ticket.slaDeadline | date:'dd MMM yyyy, h:mm a' }}</strong></div>
+        <div class="info-row"><span>Status</span>
+          <strong [class]="detail.ticket.slaBreached ? 'sla-breach' : 'sla-ok'">
+            {{ detail.ticket.slaBreached ? 'BREACHED' : 'On Track' }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="card info-card">
+        <h3>Status Timeline</h3>
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let h of detail.statusHistory">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-status">{{ h.newStatus }}</div>
+              <div class="timeline-by">by {{ h.changedBy.fullName }}</div>
+              <div class="timeline-time">{{ h.changedAt | date:'dd MMM, h:mm a' }}</div>
+              <div class="timeline-remarks" *ngIf="h.remarks">{{ h.remarks }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">Loading ticket details...</div>
