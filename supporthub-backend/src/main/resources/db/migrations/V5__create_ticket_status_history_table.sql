@@ -1,0 +1,13 @@
+CREATE TABLE ticket_status_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id BIGINT NOT NULL,
+    changed_by_id BIGINT NOT NULL,
+    old_status ENUM('NEW','UNDER_REVIEW','ASSIGNED','IN_PROGRESS','WAITING_FOR_CLIENT',
+                    'RESOLVED','UNDER_QA','VERIFIED','CLOSED','REOPENED'),
+    new_status ENUM('NEW','UNDER_REVIEW','ASSIGNED','IN_PROGRESS','WAITING_FOR_CLIENT',
+                    'RESOLVED','UNDER_QA','VERIFIED','CLOSED','REOPENED') NOT NULL,
+    remarks VARCHAR(500),
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id),
+    FOREIGN KEY (changed_by_id) REFERENCES users(id)
+);
